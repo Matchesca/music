@@ -10,10 +10,17 @@ const Box: React.FC<BoxProps> = ({ children, className }) => {
     <div
       className={twMerge(
         `
-      bg-neutral-900
+      dark:bg-neutral-900
+      dark:outline-none
+      outline
+      outline-2
+      outline-slate-200
+      shadow-md
       rounded-lg
       h-fit
       w-full
+      bg-opacity-80
+      backdrop-blur-lg
       `,
         className
       )}

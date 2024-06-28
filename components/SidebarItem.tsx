@@ -25,16 +25,20 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       h-auto
       items-center
       w-full
-      gap-x-4
+      gap-x-2
       text-md
       font-medium
       cursor-pointer
-      hover:text-white
+      dark:hover:text-white
+      dark:bg-neutral-900
+      hover:bg-neutral-200
       transition
-      text-neutral-400
+      dark:text-neutral-400
       py-1
+      rounded-md
+      p-2
       `,
-        active && "text-white"
+        active && "dark:text-white dark:bg-neutral-900 bg-neutral-200"
       )}
     >
       <Icon size={26} />

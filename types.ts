@@ -1,5 +1,28 @@
 import Stripe from "stripe";
 
+export interface User {
+    email: string,
+    userName: string,
+}
+
+export interface Playlist {
+    id: string,
+    userId: string,
+    name: string,
+    isPublic: boolean
+}
+
+export interface Song {
+    id: string;
+    user_id: string;
+    author: string;
+    duration: number;
+    encoding: string;
+    title: string;
+    song_path: string;
+    image_path: string;
+};
+
 export interface UserDetails {
     id: string;
     first_name: string;
@@ -16,8 +39,8 @@ export interface Product {
     name?: string;
     description: string;
     image?: string;
-    metadata?: Stripe.Metadat;
-}
+    metadata?: Stripe.Metadata;
+};
 
 export interface Price {
     id: string;
@@ -39,7 +62,7 @@ export interface Subscription {
     status?: Stripe.Subscription.Status;
     metadata?: Stripe.Metadata;
     price_id?: string;
-    quantity?: string;
+    quantity?: number;
     cancel_at_period_end?: boolean;
     created: string;
     current_period_start: string;
