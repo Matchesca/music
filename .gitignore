@@ -9,8 +9,10 @@
 .yarn/install-state.gz
 
 # Music folder
-
 /public/data/*
+
+# Database folder
+/database/*
 
 # testing
 /coverage
