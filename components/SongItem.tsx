@@ -5,6 +5,8 @@ import Image from "@/node_modules/next/image";
 import { Song } from "@/types";
 import PlayButton from "./PlayButton";
 import SongDropdown from "./SongDropdown";
+import Card from "@mui/material/Card";
+import { useDynamicTheme } from "@/hooks/useDynamicTheme";
 
 interface SongItemProps {
   data: Song;
@@ -13,10 +15,14 @@ interface SongItemProps {
 
 const SongItem: React.FC<SongItemProps> = ({ data, onClick }) => {
   const imagePath = useLoadImage(data);
+  const color = useDynamicTheme(imagePath, 100, true);
   return (
-    <div
+    <Card
       onClick={() => onClick(data.id)}
       className="relative group flex flex-col items-center justify-center rounded-md overflow-hidden gap-x-4 hover:bg-neutral-200 dark:bg-neutral-400/5 cursor-pointer dark:hover:bg-neutral-400/10 transition p-3"
+      sx={{
+        color,
+      }}
     >
       <div className="relative aspect-square w-full h-full rounded-md overflow-hidden">
         <Image
@@ -28,8 +34,10 @@ const SongItem: React.FC<SongItemProps> = ({ data, onClick }) => {
       </div>
 
       <div className="flex flex-col items-start w-full pt-4">
-        <p className="font-semibold truncate w-full">{data.title}</p>
-        <p className="font-light text-sm dark:text-neutral-400 text-neutral-600 pb-4 w-full truncate">
+        <p className="font-semibold truncate w-full dark:text-white">
+          {data.title}
+        </p>
+        <p className="font-light text-sm text-neutral-700 pb-4 w-full truncate">
           {data.author}
         </p>
       </div>
@@ -40,7 +48,7 @@ const SongItem: React.FC<SongItemProps> = ({ data, onClick }) => {
       <div className="absolute top-4 right-5 group-hover:opacity-100 opacity-0 transition">
         <SongDropdown songId={data.id} />
       </div>
-    </div>
+    </Card>
   );
 };
 
