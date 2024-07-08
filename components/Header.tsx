@@ -12,7 +12,10 @@ import { FaUserAlt } from "react-icons/fa";
 import { useAuth } from "@/providers/AuthProvider";
 import useLoginModal from "@/hooks/useLoginModal";
 import { ModeToggle } from "./ThemeToggle";
-import { Separator } from "./ui/separator";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import UserDropdown from "./UserDropdown";
+import { Skeleton } from "./ui/skeleton";
+import Avatar, { genConfig } from "react-nice-avatar";
 
 interface HeaderProps {
   children: React.ReactNode;
@@ -24,20 +27,21 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
   const authModal = useAuthModal();
   const loginModal = useLoginModal();
 
-  const { user, logout } = useAuth();
+  const { logout, loading, user } = useAuth();
 
   const handleLogout = async () => {
     await logout();
     // TODO: Reset any playing songs
     router.refresh();
   };
+
+  const config = genConfig(user?.email);
+
   return (
     <div
       className={twMerge(
         `
-    h-fit
-    dark:bg-gradient-to-b
-    from-emerald-800
+    h-fit 
     p-6
   `,
         className
@@ -47,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
         <div className="hidden md:flex gap-x-2 items-center">
           <button
             onClick={() => router.back()}
-            className="rounded-full bg-primary flex items-center justify-center hover:opacity-75 transition"
+            className="rounded-full bg-red-500 flex items-center justify-center hover:bg-red-600 transition"
           >
             <RxCaretLeft
               className="text-white"
@@ -56,7 +60,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
           </button>
           <button
             onClick={() => router.forward()}
-            className="rounded-full bg-primary flex items-center justify-center hover:opacity-75 transition"
+            className="rounded-full bg-red-500 flex items-center justify-center hover:bg-red-600 transition"
           >
             <RxCaretRight
               className="text-white"
@@ -88,10 +92,14 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
           {user ? (
             <div className="flex gap-x-2 items-center">
               <ModeToggle />
-              <Button onClick={handleLogout}>Logout</Button>
-              <Button onClick={() => router.push("/account")}>
-                <FaUserAlt />
-              </Button>
+              <UserDropdown handleLogout={handleLogout}>
+                <button>
+                  <Avatar
+                    className="w-9 h-9 border border-neutral-500 hover:transform hover:scale-110 hover:border-neutral-700 transition-transform duration-200 ease-out"
+                    {...config}
+                  />
+                </button>
+              </UserDropdown>
             </div>
           ) : (
             <>

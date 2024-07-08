@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import axios from "axios";
 import Modal from "./Modal";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/providers/AuthProvider";
 import { useUser } from "@/hooks/useUser";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -11,10 +11,8 @@ import usePlaylistRenameModal from "@/hooks/usePlaylistRenameModal";
 
 const PlaylistRenameModal = () => {
   const router = useRouter();
-  const { onClose, isOpen } = usePlaylistRenameModal();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const { onClose, isOpen, playlistId } = usePlaylistRenameModal();
+  const [newName, setNewName] = useState("");
   const user = useUser();
 
   useEffect(() => {
@@ -30,13 +28,18 @@ const PlaylistRenameModal = () => {
     }
   };
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRename = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await login(email, password);
+      const response = await axios.post("http://localhost:4000/rename-playlist", {
+        playlistId,
+        newName,
+      });
+      onClose();
       router.refresh();
+      console.log("Playlist rename successfull");
     } catch (error) {
-      console.error("Login failed", error);
+      console.error("Playlist rename failed", error);
     }
   };
 
@@ -49,7 +52,7 @@ const PlaylistRenameModal = () => {
     >
       <form
         className="flex flex-col gap-y-2"
-        onSubmit={handleLogin}
+        onSubmit={handleRename}
       >
         <div className="grid grid-cols-2 gap-2">
           <div className="h-[200px] w-[200px] bg-neutral-800 text-center group cursor-pointer">
@@ -60,9 +63,8 @@ const PlaylistRenameModal = () => {
           <div className="gap-y-2 flex flex-col">
             <div>
               <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
                 placeholder="Playlist name"
                 required
               />

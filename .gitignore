@@ -9,7 +9,7 @@
 .yarn/install-state.gz
 
 # Music folder
-/public/data/*
+# /public/data/*
 
 # Database folder
 /database/*

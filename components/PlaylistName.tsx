@@ -16,7 +16,7 @@ const PlaylistName: React.FC<PlaylistNameProps> = ({
 }) => {
   const PlaylistRenameModal = usePlaylistRenameModal();
   const handleClick = () => {
-    PlaylistRenameModal.onOpen();
+    PlaylistRenameModal.onOpen(playlist.id);
   };
   return (
     <div

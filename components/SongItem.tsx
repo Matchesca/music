@@ -7,6 +7,7 @@ import PlayButton from "./PlayButton";
 import SongDropdown from "./SongDropdown";
 import Card from "@mui/material/Card";
 import { useDynamicTheme } from "@/hooks/useDynamicTheme";
+import SongBadge from "./SongBadge";
 
 interface SongItemProps {
   data: Song;
@@ -15,7 +16,7 @@ interface SongItemProps {
 
 const SongItem: React.FC<SongItemProps> = ({ data, onClick }) => {
   const imagePath = useLoadImage(data);
-  const color = useDynamicTheme(imagePath, 100, true);
+  const color = useDynamicTheme(imagePath, 100, false);
   return (
     <Card
       onClick={() => onClick(data.id)}
@@ -34,12 +35,16 @@ const SongItem: React.FC<SongItemProps> = ({ data, onClick }) => {
       </div>
 
       <div className="flex flex-col items-start w-full pt-4">
-        <p className="font-semibold truncate w-full dark:text-white">
-          {data.title}
-        </p>
+        <p className="font-semibold truncate w-full">{data.title}</p>
         <p className="font-light text-sm text-neutral-700 pb-4 w-full truncate">
           {data.author}
         </p>
+        <div>
+          <SongBadge
+            song={data}
+            className="bg-neutral-600 text-xs font-semibold"
+          />
+        </div>
       </div>
 
       <div className="absolute bottom-24 right-5">
